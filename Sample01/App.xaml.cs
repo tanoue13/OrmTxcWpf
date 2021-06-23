@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace Sample01
 {
@@ -8,11 +9,13 @@ namespace Sample01
     /// </summary>
     public partial class App : Application
     {
-        private void Application_Startup(object sender, StartupEventArgs e)
+
+        protected override void OnStartup(StartupEventArgs e)
         {
             var window = new MainWindow();
             window.Show();
         }
+
     }
 
 }
