@@ -6,7 +6,69 @@
         xmlns:local="clr-namespace:Sample01"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <StackPanel Width="650" Height="400">
 
-    </Grid>
+        <Button
+            Content="Flip me!"
+            Width="100"
+            Height="50"
+            Padding="5"
+        >
+        </Button>
+
+        <Button
+            Content="Flip me!"
+            Width="100"
+            Height="50"
+            Padding="5"
+        >
+            <Button.RenderTransform>
+                <ScaleTransform ScaleX="-1" />
+            </Button.RenderTransform>
+        </Button>
+
+        <Button
+            Content="Flip me!"
+            Width="100"
+            Height="50"
+            Padding="5"
+            RenderTransformOrigin="0.5,0.5"
+        >
+            <Button.RenderTransform>
+                <ScaleTransform ScaleX="-1" />
+            </Button.RenderTransform>
+        </Button>
+
+        <Button
+            Content="Flip me!"
+            Width="100"
+            Height="50"
+            Padding="5"
+            RenderTransformOrigin="0.5,0.5"
+        >
+            <Button.RenderTransform>
+                <ScaleTransform ScaleY="-1" />
+            </Button.RenderTransform>
+        </Button>
+
+
+        <Button Content="I am animated">
+            <Button.Background>
+                <SolidColorBrush x:Name="AnimBrush"/>
+            </Button.Background>
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Button.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation
+            Storyboard.TargetName="AnimBrush" 
+            Storyboard.TargetProperty="(SolidColorBrush.Color)"
+            From="Red" To="Green" Duration="0:0:5" 
+            AutoReverse="True" RepeatBehavior="Forever" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Button.Triggers>
+        </Button>
+    </StackPanel>
 </Window>
