@@ -1,6 +1,7 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
+using Sample01.Utils;
 
 namespace Sample01
 {
@@ -18,25 +19,21 @@ namespace Sample01
 
         private static readonly string ApplicationName = "Sample01";
 
-        protected override void OnStartup(StartupEventArgs e)
+        private void Application_Startup(object sender, StartupEventArgs e)
         {
-            // 多重起動を行わないため、セマフォを作成する。
-            App.Semaphore = new Semaphore(1, 1, ApplicationName, out bool createdNew);
-            //
-            if (!createdNew)
-            {
-                string message = String.Format("既に起動されています。[アプリケーション名：{0}]", ApplicationName);
-                //var exception = new ApplicationException(message);
-                //throw exception;
-                MessageBox.Show(message);
-                Application.Current.Shutdown();
-            }
-            else
-            {
-                // Windowを表示する。
-                var window = new MainWindow();
-                window.Show();
-            }
+            // セマフォを取得し、actionを実行する。
+            App.Semaphore = ApplicationUtils.CreateSemaphore(ApplicationName, StartUpAction);
+        }
+        private void StartUpAction()
+        {
+            // Windowを表示する。
+            var window = new MainWindow();
+            window.Show();
+        }
+
+        private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show(e.Exception.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
     }
