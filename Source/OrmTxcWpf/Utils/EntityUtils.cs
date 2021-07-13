@@ -21,20 +21,14 @@ namespace OrmTxcWpf.Utils
         /// <param name="abstractEntity"></param>
         /// <returns></returns>
         public static string GetTableName(this AbstractEntity abstractEntity)
-        {
-            Type type = abstractEntity.GetType();
-            return EntityUtils.GetTableName(type);
-        }
+            => EntityUtils.GetTableName(abstractEntity.GetType());
         /// <summary>
         /// テーブル名を取得する。
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <returns></returns>
         public static string GetTableName<TEntity>() where TEntity : AbstractEntity
-        {
-            Type type = typeof(TEntity);
-            return EntityUtils.GetTableName(type);
-        }
+            => EntityUtils.GetTableName(typeof(TEntity));
         /// <summary>
         /// テーブル名を取得する。
         /// </summary>
@@ -54,20 +48,14 @@ namespace OrmTxcWpf.Utils
         /// <param name="abstractEntity"></param>
         /// <returns></returns>
         public static IEnumerable<PropertyInfo> GetColumnAttributes(this AbstractEntity abstractEntity)
-        {
-            Type type = abstractEntity.GetType();
-            return EntityUtils.GetColumnAttributes(type);
-        }
+            => EntityUtils.GetColumnAttributes(abstractEntity.GetType());
         /// <summary>
         /// カラム属性を取得する。
         /// </summary>
         /// <param name="abstractEntity"></param>
         /// <returns></returns>
         public static IEnumerable<PropertyInfo> GetColumnAttributes<TEntity>() where TEntity : AbstractEntity
-        {
-            Type type = typeof(TEntity);
-            return EntityUtils.GetColumnAttributes(type);
-        }
+            => EntityUtils.GetColumnAttributes(typeof(TEntity));
         /// <summary>
         /// カラム名を取得する。
         /// </summary>
