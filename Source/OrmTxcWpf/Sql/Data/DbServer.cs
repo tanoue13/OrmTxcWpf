@@ -9,6 +9,10 @@ using OrmTxcWpf.Sql.Daos;
 namespace OrmTxcWpf.Sql.Data
 {
 
+    /// <summary>
+    /// DBMSとの接続、トランザクション管理を行う基底クラス。
+    /// </summary>
+    /// <typeparam name="TConnection"></typeparam>
     public abstract class DbServer<TConnection> where TConnection : IDbConnection, new()
     {
 
