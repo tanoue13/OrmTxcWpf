@@ -1,14 +1,17 @@
 ﻿using System;
 
-namespace OrmTxcWpf.Attributes {
+namespace OrmTxcWpf.Attributes
+{
 
     /// <summary>
     /// 主キー属性
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class PrimaryKeyAttribute : Attribute {
+    public class PrimaryKeyAttribute : Attribute
+    {
 
-        public PrimaryKeyAttribute() {
+        public PrimaryKeyAttribute()
+        {
         }
 
     }
