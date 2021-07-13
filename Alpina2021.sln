@@ -5,6 +5,15 @@ VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample01", "Sample01\Sample01.csproj", "{E72D2446-F877-427D-BA2F-9333E437997D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{E9155EC0-E026-41BF-8066-25D23275618C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrmTxcWpf", "Source\OrmTxcWpf\OrmTxcWpf.csproj", "{E1383094-12E0-45A1-A23F-20ECC3D5EC11}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ED3C7084-5DA9-4A43-A04A-CDD91DB94D80}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +24,16 @@ Global
 		{E72D2446-F877-427D-BA2F-9333E437997D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E72D2446-F877-427D-BA2F-9333E437997D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E72D2446-F877-427D-BA2F-9333E437997D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1383094-12E0-45A1-A23F-20ECC3D5EC11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1383094-12E0-45A1-A23F-20ECC3D5EC11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1383094-12E0-45A1-A23F-20ECC3D5EC11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1383094-12E0-45A1-A23F-20ECC3D5EC11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E1383094-12E0-45A1-A23F-20ECC3D5EC11} = {E9155EC0-E026-41BF-8066-25D23275618C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {55E4B636-A675-40DA-AA6A-AEA944B91800}
