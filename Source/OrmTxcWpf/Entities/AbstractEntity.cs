@@ -2,6 +2,7 @@
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using OrmTxcWpf.Attributes;
 using OrmTxcWpf.DataModels;
 using OrmTxcWpf.Utils;
@@ -28,10 +29,10 @@ namespace OrmTxcWpf.Entities
                 .Where(prop => dataColumnCollection.Contains(prop.GetCustomAttribute<ColumnAttribute>(false).ColumnName));
             //
             // プロパティを設定する。
-            foreach (PropertyInfo property in properties)
+            Parallel.ForEach(properties, property =>
             {
                 this.SetProperty(dataRow, property);
-            }
+            });
         }
         protected virtual void SetProperty(DataRow dataRow, PropertyInfo propertyInfo)
         {
@@ -43,6 +44,7 @@ namespace OrmTxcWpf.Entities
             }
             else
             {
+                // 取得した値を設定する。
                 object value = dataRow[columnName];
                 propertyInfo.SetValue(this, value);
             }
