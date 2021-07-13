@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Threading.Tasks;
 using OrmTxcWpf.Entities;
 
 namespace OrmTxcWpf.Sql.Daos
@@ -80,22 +82,23 @@ namespace OrmTxcWpf.Sql.Daos
             // 末尾をトリムする場合、トリムする。
             if (this.TrimEnd)
             {
-                // カラムを順番に処理し、文字列型の場合はトリムする。
-                foreach (DataColumn dataColumn in dt.Columns)
+                // 文字列型のDataColumnを対象とする。（トリム）
+                IEnumerable<DataColumn> dataColumns = dt.Columns.Cast<DataColumn>()
+                    .Where(dataColumn => typeof(string).Equals(dataColumn.DataType));
+                Parallel.ForEach(dataColumns, dataColumn =>
                 {
-                    if (typeof(string).Equals(dataColumn.DataType))
+                    // カラム位置を取得する。
+                    int ordinal = dataColumn.Ordinal;
+                    // カラム位置を使用し、値がnullでないDataRowのみを対象とする。（トリム）
+                    IEnumerable<DataRow> dataRows = dt.Rows.Cast<DataRow>()
+                        .Where(dataRow => !dataRow.IsNull(ordinal));
+                    Parallel.ForEach(dataRows, dataRow =>
                     {
-                        foreach (DataRow dataRow in dt.Rows)
-                        {
-                            int ordinal = dataColumn.Ordinal;
-                            if (!dataRow.IsNull(ordinal))
-                            {
-                                string value = dataRow[ordinal] as string;
-                                dataRow[ordinal] = value.TrimEnd();
-                            }
-                        }
-                    }
-                }
+                        // トリムした値を設定する。
+                        string value = dataRow[ordinal] as string;
+                        dataRow[ordinal] = value.TrimEnd();
+                    });
+                });
             }
             // 内部処理での変更内容をコミットする。
             dt.AcceptChanges();
