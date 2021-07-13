@@ -13,8 +13,8 @@ namespace OrmTxcWpf.Sql.Daos
         where TDbDataAdapter : DbDataAdapter, new()
     {
 
-        IEnumerable<IDbCommand> IDao.Commands { get => this.CommandList; }
-        protected readonly IList<IDbCommand> CommandList = new List<IDbCommand>();
+        IEnumerable<IDbCommand> IDao.Commands { get => this.CommandCollection; }
+        protected readonly IEnumerable<IDbCommand> CommandCollection;
 
         protected TDbCommand Command { get; set; } = new TDbCommand();
 
@@ -28,7 +28,7 @@ namespace OrmTxcWpf.Sql.Daos
         /// </summary>
         public AbstractDao()
         {
-            this.CommandList.Add(this.Command);
+            this.CommandCollection = new IDbCommand[] { this.Command };
         }
 
         /// <summary>
