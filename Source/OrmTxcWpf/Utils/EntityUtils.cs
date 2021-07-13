@@ -63,9 +63,9 @@ namespace OrmTxcWpf.Utils
         /// </summary>
         /// <param name="abstractEntity"></param>
         /// <returns></returns>
-        public static IEnumerable<PropertyInfo> GetColumnAttributes<E>() where E : AbstractEntity
+        public static IEnumerable<PropertyInfo> GetColumnAttributes<TEntity>() where TEntity : AbstractEntity
         {
-            Type type = typeof(E);
+            Type type = typeof(TEntity);
             return EntityUtils.GetColumnAttributes(type);
         }
         /// <summary>
