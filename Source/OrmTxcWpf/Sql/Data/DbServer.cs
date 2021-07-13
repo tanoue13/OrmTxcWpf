@@ -21,19 +21,10 @@ namespace OrmTxcWpf.Sql.Data
         /// </summary>
         public virtual DataSource DataSource { protected get; set; } = new ConnectionStringDataSource();
 
-        public void Execute(IDao dao, Action action)
-        {
-            this.Execute(new IDao[] { dao }, action);
-        }
-        public void Execute(IEnumerable<IDao> daos, Action action)
-        {
-            this.Execute(daos, tx => { action(); });
-        }
+        public void Execute(IDao dao, Action action) => this.Execute(new IDao[] { dao }, action);
+        public void Execute(IEnumerable<IDao> daos, Action action) => this.Execute(daos, tx => { action(); });
+        public void Execute(IDao dao, Action<IDbTransaction> action) => this.Execute(new IDao[] { dao }, action);
 
-        public void Execute(IDao dao, Action<IDbTransaction> action)
-        {
-            this.Execute(new IDao[] { dao }, action);
-        }
         public virtual void Execute(IEnumerable<IDao> daos, Action<IDbTransaction> action)
         {
             using (var connection = new TConnection())
@@ -209,22 +200,8 @@ namespace OrmTxcWpf.Sql.Data
                 // 存在する場合、かつ、上書き可能の場合、パラメータを上書きする。
                 if (overwriteIfExists)
                 {
-                    // 開発者向けコメント（2021.01.28田上）：パラメータ値の上書きに関するロジックを見直し。
-                    // （廃止ロジック）既存のIDataParameterオブジェクトをコレクションから削除し、新しいIDataParameterオブジェクトをコレクションに追加する。
-                    //command.Parameters.RemoveAt(parameterName);
-                    //command.Parameters.Add(parameter);
-                    //
-                    //
                     IDataParameter dataParameter = command.Parameters[parameterName] as IDataParameter;
                     dataParameter.Value = parameter.Value;
-                    // 開発者向けコメント（2021.01.28田上）：
-                    // ・かつては、既存のIDataParameterオブジェクトをコレクションから削除し、新しいIDataParameterオブジェクトをコレクションに追加していた。
-                    // ・しかし、この方法では、IDbCommand.Prepare()を呼び出した後にパラメータを上書き（オブジェクトを置換）した場合に、
-                    // 　サーバ側に新しいオブジェクトの値が反映されずにSQLが実行されることが判明した。反映するためには、置換後に再度IDbCommand.Prepare()を呼び出す必要がある。
-                    // ・この挙動により、予期せぬ不具合を引き起こす可能性がある。DbServer内でSQLパラメータの値を上書きしても、IDbCommand.Prepare()の呼び出しが実施されなければ反映されないため。
-                    // 　- 例１：共通項目で使用するシステムID、プログラムIDなどの値
-                    // 　- 例２：UPDATE文を実行する際のバージョンNo.（既存レコードのバージョンNo.フィールドの値を設定する）
-                    // ・したがって、パラメータ値の上書きは、既存のIDataParameterオブジェクトを取得し、そのオブジェクトの値を上書きするように変更した。
                 }
             }
             else
