@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using OrmTxcWpf.Sql.Daos;
 
@@ -36,16 +37,13 @@ namespace OrmTxcWpf.Sql.Data
                     // 前処理：コマンドに接続とトランザクションを設定する。
                     foreach (IDao dao in daos)
                     {
-                        IEnumerable<IDbCommand> commands = dao.Commands;
-                        if (commands != null)
+                        IEnumerable<IDbCommand> commands = dao.Commands ?? Enumerable.Empty<IDbCommand>();
+                        foreach (IDbCommand command in commands)
                         {
-                            foreach (IDbCommand command in commands)
-                            {
-                                // 接続を設定する。
-                                command.Connection = connection;
-                                // トランザクションを設定する。
-                                command.Transaction = tx;
-                            }
+                            // 接続を設定する。
+                            command.Connection = connection;
+                            // トランザクションを設定する。
+                            command.Transaction = tx;
                         }
                     }
                     //
@@ -155,14 +153,11 @@ namespace OrmTxcWpf.Sql.Data
         /// <param name="dao"></param>
         public void SetTransaction(IDbTransaction tx, IDao dao)
         {
-            IEnumerable<IDbCommand> commands = dao.Commands;
-            if (commands != null)
+            IEnumerable<IDbCommand> commands = dao.Commands ?? Enumerable.Empty<IDbCommand>();
+            foreach (IDbCommand command in commands)
             {
-                foreach (IDbCommand command in commands)
-                {
-                    command.Connection = tx.Connection;
-                    command.Transaction = tx;
-                }
+                command.Connection = tx.Connection;
+                command.Transaction = tx;
             }
         }
 
