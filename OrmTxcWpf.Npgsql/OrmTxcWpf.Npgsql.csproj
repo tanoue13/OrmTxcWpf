@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Source\OrmTxcWpf\OrmTxcWpf.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql" Version="5.0.7" />
+  </ItemGroup>
+
+</Project>
