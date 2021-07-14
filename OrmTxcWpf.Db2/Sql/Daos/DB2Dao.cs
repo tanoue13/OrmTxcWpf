@@ -28,14 +28,7 @@ namespace OrmTxcWpf.Db2.Sql.Daos
     {
 
         protected override int ExecuteNonQuery(DB2Command command, TEntity entity, bool enableOptimisticConcurrency = true)
-        {
-            //
-            // コマンドを実行する。
-            int count = DB2Server.ExecuteNonQuery(command, enableOptimisticConcurrency);
-            //
-            // 結果を戻す。
-            return count;
-        }
+            => DB2Server.ExecuteNonQuery(command, enableOptimisticConcurrency);
 
         /// <summary>
         /// 新規登録する。（１件）
