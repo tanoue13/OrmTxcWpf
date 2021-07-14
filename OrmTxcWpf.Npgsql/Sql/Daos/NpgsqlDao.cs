@@ -23,14 +23,7 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
     {
 
         protected override int ExecuteNonQuery(NpgsqlCommand command, TEntity entity, bool enableOptimisticConcurrency = true)
-        {
-            //
-            // コマンドを実行する。
-            int count = NpgsqlServer.ExecuteNonQuery(command, enableOptimisticConcurrency);
-            //
-            // 結果を戻す。
-            return count;
-        }
+            => NpgsqlServer.ExecuteNonQuery(command, enableOptimisticConcurrency);
 
         /// <summary>
         /// 新規登録する。（１件）
