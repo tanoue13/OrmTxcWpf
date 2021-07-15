@@ -2,7 +2,7 @@
 using System.Data.Common;
 using System.Runtime.Serialization;
 
-namespace OrmTxcWpf.Sql.Data
+namespace OrmTxcWpf.Data
 {
 
     /// <summary>

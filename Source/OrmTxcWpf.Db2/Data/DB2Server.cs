@@ -5,9 +5,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using IBM.Data.Db2;
-using OrmTxcWpf.Sql.Data;
+using OrmTxcWpf.Data;
 
-namespace OrmTxcWpf.Db2.Sql.Data
+namespace OrmTxcWpf.Db2.Data
 {
 
     public class DB2Server : DbServer<DB2Connection>

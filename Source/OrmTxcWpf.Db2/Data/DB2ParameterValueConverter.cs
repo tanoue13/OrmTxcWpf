@@ -1,8 +1,8 @@
 ﻿using System;
 using IBM.Data.Db2;
-using OrmTxcWpf.Sql.Data;
+using OrmTxcWpf.Data;
 
-namespace OrmTxcWpf.Db2.Sql.Data
+namespace OrmTxcWpf.Db2.Data
 {
 
     /// <summary>

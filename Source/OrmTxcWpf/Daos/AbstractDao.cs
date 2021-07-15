@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using OrmTxcWpf.Entities;
 
-namespace OrmTxcWpf.Sql.Daos
+namespace OrmTxcWpf.Daos
 {
 
     public abstract class AbstractDao<TEntity, TDbCommand, TDbDataAdapter> : IDao
