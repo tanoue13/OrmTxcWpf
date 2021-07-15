@@ -5,9 +5,9 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using OrmTxcWpf.Sql.Daos;
+using OrmTxcWpf.Daos;
 
-namespace OrmTxcWpf.Sql.Data
+namespace OrmTxcWpf.Data
 {
 
     /// <summary>

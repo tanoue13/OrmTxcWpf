@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 
-namespace OrmTxcWpf.Sql.Daos
+namespace OrmTxcWpf.Daos
 {
 
     public interface IDao

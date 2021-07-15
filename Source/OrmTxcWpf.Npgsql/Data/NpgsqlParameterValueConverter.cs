@@ -1,7 +1,7 @@
 ﻿using System;
-using OrmTxcWpf.Sql.Data;
+using OrmTxcWpf.Data;
 
-namespace OrmTxcWpf.Npgsql.Sql.Data
+namespace OrmTxcWpf.Npgsql.Data
 {
 
     /// <summary>

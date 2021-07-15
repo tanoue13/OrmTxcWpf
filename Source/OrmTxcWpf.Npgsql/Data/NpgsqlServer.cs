@@ -4,9 +4,9 @@ using System.Linq;
 using System.Reflection;
 using Npgsql;
 using NpgsqlTypes;
-using OrmTxcWpf.Sql.Data;
+using OrmTxcWpf.Data;
 
-namespace OrmTxcWpf.Npgsql.Sql.Data
+namespace OrmTxcWpf.Npgsql.Data
 {
 
     public class NpgsqlServer : DbServer<NpgsqlConnection>

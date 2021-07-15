@@ -4,26 +4,31 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Npgsql;
+using IBM.Data.Db2;
 using OrmTxcWpf.Attributes;
-using OrmTxcWpf.Npgsql.Entities;
-using OrmTxcWpf.Npgsql.Sql.Data;
-using OrmTxcWpf.Sql.Daos;
-using OrmTxcWpf.Sql.Data;
+using OrmTxcWpf.Daos;
+using OrmTxcWpf.Data;
+using OrmTxcWpf.Db2.Data;
+using OrmTxcWpf.Db2.Entities;
 using OrmTxcWpf.Utils;
 
-namespace OrmTxcWpf.Npgsql.Sql.Daos
+namespace OrmTxcWpf.Db2.Daos
 {
 
     /// <summary>
-    /// PostgreSQL用のdao
+    /// Daoの基底クラス。BaseEntityのサブクラスに対してInsert, UpdateByPk, FindByPkを実装済み。
     /// </summary>
-    public abstract class NpgsqlDao<TEntity> : AbstractDao<TEntity, NpgsqlCommand, NpgsqlDataAdapter>
-        where TEntity : NpgsqlEntity, new()
+    /// <typeparam name="TEntity"></typeparam>
+    /// <remarks>
+    /// 同時実行排他制御による更新時の異常等はDB2Server#ExecuteNonQuery()で処理し、
+    /// このクラスでは例外処理等は実施しない。
+    /// </remarks>
+    public abstract class DB2Dao<TEntity> : AbstractDao<TEntity, DB2Command, DB2DataAdapter>
+        where TEntity : DB2Entity, new()
     {
 
-        protected override int ExecuteNonQuery(NpgsqlCommand command, TEntity entity, bool enableOptimisticConcurrency = true)
-            => NpgsqlServer.ExecuteNonQuery(command, enableOptimisticConcurrency);
+        protected override int ExecuteNonQuery(DB2Command command, TEntity entity, bool enableOptimisticConcurrency = true)
+            => DB2Server.ExecuteNonQuery(command, enableOptimisticConcurrency);
 
         /// <summary>
         /// 新規登録する。（１件）
@@ -34,7 +39,7 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
         {
             //
             // コマンドの準備に必要なオブジェクトを生成する。
-            NpgsqlCommand command = this.Command;
+            DB2Command command = this.Command;
             //
             // コマンドを準備する。
             this.BuildInsertCommand(command, entity);
@@ -45,7 +50,7 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
             // 結果を戻す。
             return result;
         }
-        protected virtual void BuildInsertCommand(NpgsqlCommand command, TEntity entity)
+        protected virtual void BuildInsertCommand(DB2Command command, TEntity entity)
         {
             // ディクショナリ（カラム名→プロパティ）を生成する。
             Dictionary<string, PropertyInfo> dictionary = entity.GetColumnAttributes()
@@ -71,7 +76,7 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
                     valueStringBuilder.Append(parameterName);
                     // SQLパラメータに登録値を設定する。
                     PropertyInfo propertyInfo = pair.Value;
-                    NpgsqlServer.AddParameterOrReplace(command, parameterName, entity, propertyInfo);
+                    DB2Server.AddParameterOrReplace(command, parameterName, entity, propertyInfo);
                 }
                 // ２件目以降についての処理：
                 while (pairs.MoveNext())
@@ -85,7 +90,7 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
                     valueStringBuilder.Append(" , ").Append(parameterName);
                     // SQLパラメータに登録値を設定する。
                     PropertyInfo propertyInfo = pair.Value;
-                    NpgsqlServer.AddParameterOrReplace(command, parameterName, entity, propertyInfo);
+                    DB2Server.AddParameterOrReplace(command, parameterName, entity, propertyInfo);
                 }
             }
             //
@@ -114,7 +119,7 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
         {
             //
             // コマンドの準備に必要なオブジェクトを生成する。
-            NpgsqlCommand command = this.Command;
+            DB2Command command = this.Command;
             //
             // コマンドを準備する。
             this.BuildUpdateByPkCommand(command, entity);
@@ -125,7 +130,7 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
             // 結果を戻す。
             return result;
         }
-        protected virtual void BuildUpdateByPkCommand(NpgsqlCommand command, TEntity entity)
+        protected virtual void BuildUpdateByPkCommand(DB2Command command, TEntity entity)
         {
             // ディクショナリ（カラム名→プロパティ）を生成する。（主キー属性ありのカラムのみ）
             Dictionary<string, PropertyInfo> dictionary = entity.GetColumnAttributes()
@@ -147,7 +152,7 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
                     builder.Append(String.Format(" where x.{0} = {1}", columnName, parameterName));
                     // SQLパラメータに登録値を設定する。
                     PropertyInfo propertyInfo = pair.Value;
-                    NpgsqlServer.AddParameterOrReplace(command, parameterName, entity, propertyInfo);
+                    DB2Server.AddParameterOrReplace(command, parameterName, entity, propertyInfo);
                 }
                 // ２件目以降についての処理：
                 while (pairs.MoveNext())
@@ -159,7 +164,7 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
                     builder.Append(String.Format(" and x.{0} = {1}", columnName, parameterName));
                     // SQLパラメータに登録値を設定する。
                     PropertyInfo propertyInfo = pair.Value;
-                    NpgsqlServer.AddParameterOrReplace(command, parameterName, entity, propertyInfo);
+                    DB2Server.AddParameterOrReplace(command, parameterName, entity, propertyInfo);
                 }
                 // 共通項目についての処理：
                 builder.Append(this.GetCommonFieldForUpdateCondition("x", true));
@@ -167,7 +172,7 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
             //
             this.BuildUpdateCommand(command, entity, builder.ToString());
         }
-        private void BuildUpdateCommand(NpgsqlCommand command, TEntity entity, string filter)
+        private void BuildUpdateCommand(DB2Command command, TEntity entity, string filter)
         {
             // ディクショナリ（カラム名→プロパティ）を生成する。（主キー属性なしのカラムのみ）
             Dictionary<string, PropertyInfo> dictionary = entity.GetColumnAttributes()
@@ -191,7 +196,7 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
                     columnStringBuilder.Append(String.Format(" {0} = {1}", columnName, parameterName));
                     // SQLパラメータに登録値を設定する。
                     PropertyInfo propertyInfo = pair.Value;
-                    NpgsqlServer.AddParameterOrReplace(command, parameterName, entity, propertyInfo);
+                    DB2Server.AddParameterOrReplace(command, parameterName, entity, propertyInfo);
                 }
                 // ２件目以降についての処理：
                 while (pairs.MoveNext())
@@ -203,7 +208,7 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
                     columnStringBuilder.Append(String.Format(" , {0} = {1}", columnName, parameterName));
                     // SQLパラメータに登録値を設定する。
                     PropertyInfo propertyInfo = pair.Value;
-                    NpgsqlServer.AddParameterOrReplace(command, parameterName, entity, propertyInfo);
+                    DB2Server.AddParameterOrReplace(command, parameterName, entity, propertyInfo);
                 }
                 // 共通項目についての処理：
                 columnStringBuilder.Append(this.GetCommonFieldForUpdate(true));
@@ -235,7 +240,7 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
         {
             //
             // コマンドの準備に必要なオブジェクトを生成する。
-            NpgsqlCommand command = this.Command;
+            DB2Command command = this.Command;
             //
             // コマンドを準備する。
             this.BuildSelectByPkCommand(command, entity);
@@ -269,7 +274,7 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
                     }
             }
         }
-        protected virtual void BuildSelectByPkCommand(NpgsqlCommand command, TEntity entity)
+        protected virtual void BuildSelectByPkCommand(DB2Command command, TEntity entity)
         {
             // ディクショナリ（カラム名→プロパティ）を生成する。（主キー属性ありのカラムのみ）
             Dictionary<string, PropertyInfo> dictionary = entity.GetColumnAttributes()
@@ -291,7 +296,7 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
                     builder.Append(String.Format(" where x.{0} = {1}", columnName, parameterName));
                     // SQLパラメータに登録値を設定する。
                     PropertyInfo propertyInfo = pair.Value;
-                    NpgsqlServer.AddParameterOrReplace(command, parameterName, entity, propertyInfo);
+                    DB2Server.AddParameterOrReplace(command, parameterName, entity, propertyInfo);
                 }
                 // ２件目以降についての処理：
                 while (pairs.MoveNext())
@@ -303,7 +308,7 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
                     builder.Append(String.Format(" and x.{0} = {1}", columnName, parameterName));
                     // SQLパラメータに登録値を設定する。
                     PropertyInfo propertyInfo = pair.Value;
-                    NpgsqlServer.AddParameterOrReplace(command, parameterName, entity, propertyInfo);
+                    DB2Server.AddParameterOrReplace(command, parameterName, entity, propertyInfo);
                 }
                 // 共通項目についての処理：
                 builder.Append(this.GetCommonFieldForSelectCondition("x", true));
@@ -311,7 +316,7 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
             //
             this.BuildSelectCommand(command, entity, builder.ToString());
         }
-        private void BuildSelectCommand(NpgsqlCommand command, TEntity entity, string filter)
+        private void BuildSelectCommand(DB2Command command, TEntity entity, string filter)
         {
             // テーブル名を取得する。
             string tableName = entity.GetTableName();
@@ -326,8 +331,8 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
             // NG: select a, b, c from table_namewhere x = @x
             var builder = new StringBuilder();
             builder.Append(" select");
-            builder.Append(String.Join(",", columnNames.Select(columnName => String.Format(" x.{0}", columnName))));
-            builder.Append(this.GetCommonFieldForSelect("x"));
+            builder.Append(this.GetCommonFieldForSelect("x", false));
+            builder.Append(columnNames.Aggregate(new StringBuilder(), (sb, next) => sb.Append(String.Format(" , x.{0}", next)), sb => sb.ToString()));
             builder.Append(" from ").Append(tableName).Append(" as x");
             builder.Append(" "); // fool-proof
             builder.Append(filter);
@@ -337,6 +342,43 @@ namespace OrmTxcWpf.Npgsql.Sql.Daos
             // データソースにコマンドを準備する。
             command.Prepare();
         }
+
+
+        #region"BaseEntity（共通項目）に関するプロパティや処理"
+
+        /// <summary>
+        /// テーブル内の相対行番号（Relative Record Number）を取得する際のカラム名です。
+        /// </summary>
+        protected static string RRNColumnName
+        {
+            get => DB2Entity.RRNColumnName;
+        }
+
+        protected override string GetCommonFieldForSelect(string tableAlias, bool appendDelimiter = true)
+        {
+            var builder = new StringBuilder();
+            //
+            // 開発者向けコメント（2021.04.14田上）：
+            // ・DB2のRRN関数（相対行番号）の引数には、テーブル別名を指定する必要がある。
+            // ・ドキュメント上はテーブル名でも可と読み取れるが、実際に指定してみるとエラーとなった。
+            // ・参考：https://www.ibm.com/docs/ja/i/7.4?topic=functions-rrn
+            // ・そのため、テーブル別名が指定されている場合のみ相対行番号を取得するようにしている。
+            //
+            if (!String.IsNullOrWhiteSpace(tableAlias))
+            {
+                if (appendDelimiter)
+                {
+                    builder.Append(" ,");
+                }
+                builder.Append(" ");
+                // 相対行番号を追加する。
+                builder.Append($"rrn( {tableAlias} ) as {RRNColumnName}");
+            }
+            // 結果を戻す。
+            return builder.ToString();
+        }
+
+        #endregion
 
     }
 

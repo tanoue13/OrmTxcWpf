@@ -1,4 +1,4 @@
-﻿namespace OrmTxcWpf.Sql.Data
+﻿namespace OrmTxcWpf.Data
 {
 
     /// <summary>
