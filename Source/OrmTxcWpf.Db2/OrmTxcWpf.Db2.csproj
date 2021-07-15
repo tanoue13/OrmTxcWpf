@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Source\OrmTxcWpf\OrmTxcWpf.csproj" />
+    <ProjectReference Include="..\OrmTxcWpf\OrmTxcWpf.csproj" />
   </ItemGroup>
 
 </Project>
