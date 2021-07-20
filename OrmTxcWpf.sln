@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrmTxcWpf.Db2", "Source\Orm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrmTxcWpf.Npgsql", "Source\OrmTxcWpf.Npgsql\OrmTxcWpf.Npgsql.csproj", "{FD305997-A997-4E8D-BBA4-ECA84062DE16}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrmTxcWpf.SqlClient", "Source\OrmTxcWpf.SqlClient\OrmTxcWpf.SqlClient.csproj", "{6F9E5780-C9D5-48D7-89FB-90C5490C0171}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{FD305997-A997-4E8D-BBA4-ECA84062DE16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD305997-A997-4E8D-BBA4-ECA84062DE16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD305997-A997-4E8D-BBA4-ECA84062DE16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F9E5780-C9D5-48D7-89FB-90C5490C0171}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F9E5780-C9D5-48D7-89FB-90C5490C0171}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F9E5780-C9D5-48D7-89FB-90C5490C0171}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F9E5780-C9D5-48D7-89FB-90C5490C0171}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{E1383094-12E0-45A1-A23F-20ECC3D5EC11} = {E9155EC0-E026-41BF-8066-25D23275618C}
 		{007DA43B-738C-48F9-8C6B-53C64519231B} = {E9155EC0-E026-41BF-8066-25D23275618C}
 		{FD305997-A997-4E8D-BBA4-ECA84062DE16} = {E9155EC0-E026-41BF-8066-25D23275618C}
+		{6F9E5780-C9D5-48D7-89FB-90C5490C0171} = {E9155EC0-E026-41BF-8066-25D23275618C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {55E4B636-A675-40DA-AA6A-AEA944B91800}
