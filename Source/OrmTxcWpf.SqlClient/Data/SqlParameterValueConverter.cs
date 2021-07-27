@@ -1,15 +1,15 @@
 ﻿using System;
 using OrmTxcWpf.Data;
 
-namespace OrmTxcWpf.Npgsql.Data
+namespace OrmTxcWpf.SqlClient.Data
 {
 
     /// <summary>
-    /// NpgsqlParameterの値に変換するコンバータ。
+    /// SqlParameterの値に変換するコンバータ。
     /// </summary>
     /// <remarks>
     /// </remarks>
-    public class NpgsqlParameterValueConverter : IParameterValueConverter
+    public class SqlParameterValueConverter : IParameterValueConverter
     {
 
         public object Convert(object value, Type targetType, object parameter)
@@ -29,7 +29,7 @@ namespace OrmTxcWpf.Npgsql.Data
             else if (typeof(string).Equals(valueType))
             {
                 // string型を変換する。
-                var sValue = value as string;
+                string sValue = value as string;
                 if (sValue != null)
                 {
                     return value;
@@ -102,7 +102,7 @@ namespace OrmTxcWpf.Npgsql.Data
         /// <returns></returns>
         private DateTime SpecifyKindLocalIfUnspecified(DateTime value)
         {
-            if (value.Kind == DateTimeKind.Unspecified)
+            if (DateTimeKind.Unspecified == value.Kind)
             {
                 DateTime dateTimeLocal = DateTime.SpecifyKind(value, DateTimeKind.Local);
                 return dateTimeLocal;
